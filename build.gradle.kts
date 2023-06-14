@@ -36,6 +36,8 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.hibernate.validator:hibernate-validator")
     implementation("org.postgresql:postgresql")
+    implementation("org.springframework.kafka:spring-kafka")
+
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashLogbackEncoderVersion")
