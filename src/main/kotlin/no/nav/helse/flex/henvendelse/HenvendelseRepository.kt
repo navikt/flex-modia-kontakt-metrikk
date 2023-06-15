@@ -1,8 +1,6 @@
 package no.nav.helse.flex.henvendelse
 
 import org.springframework.data.annotation.Id
-import org.springframework.data.jdbc.repository.query.Modifying
-import org.springframework.data.jdbc.repository.query.Query
 import org.springframework.data.relational.core.mapping.Table
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository

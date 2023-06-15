@@ -12,4 +12,3 @@ data class HenvendelseKafkaDTO(
     val tema: String,
     val tidspunkt: Instant
 )
-

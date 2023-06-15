@@ -30,4 +30,4 @@ KAFKA_KEYSTORE_PATH: ""
 
 
 aiven-kafka:
-  auto-offset-reset: latest
+  auto-offset-reset: earliest
