@@ -12,6 +12,8 @@ spec:
     max: {{replicas_max}}
     cpuThresholdPercentage: 90
   port: 8080
+  ingresses:
+    - https://flexmodia-kontakt.intern.dev.nav.no
   liveness:
     path: /internal/health/liveness
   readiness:
