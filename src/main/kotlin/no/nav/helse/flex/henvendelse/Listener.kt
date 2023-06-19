@@ -29,6 +29,8 @@ private fun HenvendelseKafkaDTO.tilHenvendelseDbRecord(): HenvendelseDbRecord = 
     id = null,
     fnr = fnr,
     tema = tema,
+    temagruppe = temagruppe,
+    threadId = traadId,
     tidspunkt = tidspunkt
 )
 

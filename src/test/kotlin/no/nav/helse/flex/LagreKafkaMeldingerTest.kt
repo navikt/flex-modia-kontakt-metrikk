@@ -29,7 +29,7 @@ class LagreKafkaMeldingerTest : FellesTestOppsett() {
             ProducerRecord(
                 topic,
                 UUID.randomUUID().toString(),
-                HenvendelseKafkaDTO(fnr = "1234", tema = "SYK", tidspunkt = Instant.EPOCH).serialisertTilString()
+                HenvendelseKafkaDTO(fnr = "1234", tema = "SYK", tidspunkt = Instant.EPOCH, temagruppe = "HELSE", traadId = "123456").serialisertTilString()
             )
         )
 

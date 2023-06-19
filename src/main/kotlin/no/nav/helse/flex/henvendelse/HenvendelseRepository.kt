@@ -14,6 +14,8 @@ data class HenvendelseDbRecord(
     @Id
     val id: String? = null,
     val fnr: String,
-    val tema: String,
+    val tema: String?,
+    val temagruppe: String,
+    val threadId: String,
     val tidspunkt: Instant
 )
