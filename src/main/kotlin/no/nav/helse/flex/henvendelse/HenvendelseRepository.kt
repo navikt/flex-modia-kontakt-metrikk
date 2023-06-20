@@ -16,6 +16,6 @@ data class HenvendelseDbRecord(
     val fnr: String,
     val tema: String?,
     val temagruppe: String,
-    val threadId: String,
+    val traadId: String,
     val tidspunkt: Instant
 )

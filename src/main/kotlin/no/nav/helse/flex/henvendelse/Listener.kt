@@ -1,7 +1,8 @@
 package no.nav.helse.flex.henvendelse
 
-import no.nav.helse.flex.logger
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.springframework.dao.DuplicateKeyException
+import org.springframework.data.relational.core.conversion.DbActionExecutionException
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Component
@@ -11,17 +12,25 @@ class Listener(
     val henvendelseRepository: HenvendelseRepository
 ) {
 
-    val log = logger()
-
     @KafkaListener(
         topics = [topic],
         containerFactory = "aivenKafkaListenerContainerFactory"
     )
     fun listen(cr: ConsumerRecord<String, String>, acknowledgment: Acknowledgment) {
         val henvendelseKafkaDTO = cr.value().tilHenvendelseKafkaDTO()
-        henvendelseRepository.save(henvendelseKafkaDTO.tilHenvendelseDbRecord())
-        log.info("Mottok og lagret $henvendelseKafkaDTO") // TODO skal bort innen prod
+        lagreHenvendelse(henvendelseKafkaDTO)
         acknowledgment.acknowledge()
+    }
+
+    fun lagreHenvendelse(henvendelseKafkaDTO: HenvendelseKafkaDTO) {
+        try {
+            henvendelseRepository.save(henvendelseKafkaDTO.tilHenvendelseDbRecord())
+        } catch (e: DbActionExecutionException) {
+            if (e.cause is DuplicateKeyException) {
+                return
+            }
+            throw e
+        }
     }
 }
 
@@ -30,7 +39,7 @@ private fun HenvendelseKafkaDTO.tilHenvendelseDbRecord(): HenvendelseDbRecord = 
     fnr = fnr,
     tema = tema,
     temagruppe = temagruppe,
-    threadId = traadId,
+    traadId = traadId,
     tidspunkt = tidspunkt
 )
 
