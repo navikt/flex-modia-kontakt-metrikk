@@ -9,14 +9,16 @@ import org.springframework.stereotype.Component
 
 @Component
 class Listener(
-    val henvendelseRepository: HenvendelseRepository
+    val henvendelseRepository: HenvendelseRepository,
 ) {
-
     @KafkaListener(
-        topics = [topic],
-        containerFactory = "aivenKafkaListenerContainerFactory"
+        topics = [TOPIC],
+        containerFactory = "aivenKafkaListenerContainerFactory",
     )
-    fun listen(cr: ConsumerRecord<String, String>, acknowledgment: Acknowledgment) {
+    fun listen(
+        cr: ConsumerRecord<String, String>,
+        acknowledgment: Acknowledgment,
+    ) {
         val henvendelseKafkaDTO = cr.value().tilHenvendelseKafkaDTO()
         lagreHenvendelse(henvendelseKafkaDTO)
         acknowledgment.acknowledge()
@@ -34,13 +36,14 @@ class Listener(
     }
 }
 
-private fun HenvendelseKafkaDTO.tilHenvendelseDbRecord(): HenvendelseDbRecord = HenvendelseDbRecord(
-    id = null,
-    fnr = fnr,
-    tema = tema,
-    temagruppe = temagruppe,
-    traadId = traadId,
-    tidspunkt = tidspunkt
-)
+private fun HenvendelseKafkaDTO.tilHenvendelseDbRecord(): HenvendelseDbRecord =
+    HenvendelseDbRecord(
+        id = null,
+        fnr = fnr,
+        tema = tema,
+        temagruppe = temagruppe,
+        traadId = traadId,
+        tidspunkt = tidspunkt,
+    )
 
-const val topic = "personoversikt.henvendelse-oppdatering-melding"
+const val TOPIC = "personoversikt.henvendelse-oppdatering-melding"

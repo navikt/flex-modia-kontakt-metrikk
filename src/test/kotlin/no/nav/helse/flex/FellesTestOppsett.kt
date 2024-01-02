@@ -21,7 +21,6 @@ private class PostgreSQLContainer14 : PostgreSQLContainer<PostgreSQLContainer14>
 @SpringBootTest(classes = [Application::class])
 @AutoConfigureMockMvc(print = MockMvcPrint.NONE, printOnlyOnFailure = false)
 abstract class FellesTestOppsett {
-
     @Autowired
     lateinit var kafkaProducer: KafkaProducer<String, String>
 
@@ -29,7 +28,6 @@ abstract class FellesTestOppsett {
     lateinit var mockMvc: MockMvc
 
     companion object {
-
         init {
             val threads = mutableListOf<Thread>()
 
