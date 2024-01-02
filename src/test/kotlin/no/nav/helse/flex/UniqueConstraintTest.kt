@@ -13,7 +13,6 @@ import java.util.*
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class UniqueConstraintTest : FellesTestOppsett() {
-
     @Autowired
     lateinit var henvendelseRepository: HenvendelseRepository
 
@@ -24,30 +23,33 @@ class UniqueConstraintTest : FellesTestOppsett() {
     fun `DB liker ikke duplikat`() {
         henvendelseRepository.deleteAll()
 
-        val henvendelseDbRecord = HenvendelseDbRecord(
-            fnr = "1234",
-            tema = "SYK",
-            tidspunkt = OffsetDateTime.now().minusMonths(1).toInstant(),
-            temagruppe = "HELSE",
-            traadId = "123456"
-        )
+        val henvendelseDbRecord =
+            HenvendelseDbRecord(
+                fnr = "1234",
+                tema = "SYK",
+                tidspunkt = OffsetDateTime.now().minusMonths(1).toInstant(),
+                temagruppe = "HELSE",
+                traadId = "123456",
+            )
         henvendelseRepository.save(henvendelseDbRecord)
-        val e = Assertions.assertThrows(DbActionExecutionException::class.java) {
-            henvendelseRepository.save(henvendelseDbRecord)
-        }
+        val e =
+            Assertions.assertThrows(DbActionExecutionException::class.java) {
+                henvendelseRepository.save(henvendelseDbRecord)
+            }
         (e.cause is DuplicateKeyException) shouldBe true
     }
 
     @Test
     fun `Listener håndterer at DB ikke liker duplikat`() {
         henvendelseRepository.deleteAll()
-        val henvendelseDbRecord = HenvendelseKafkaDTO(
-            fnr = "1234",
-            tema = "SYK",
-            tidspunkt = Instant.now(),
-            temagruppe = "HELSE",
-            traadId = "123456"
-        )
+        val henvendelseDbRecord =
+            HenvendelseKafkaDTO(
+                fnr = "1234",
+                tema = "SYK",
+                tidspunkt = Instant.now(),
+                temagruppe = "HELSE",
+                traadId = "123456",
+            )
         listener.lagreHenvendelse(henvendelseDbRecord)
         listener.lagreHenvendelse(henvendelseDbRecord)
         henvendelseRepository.count() `should be equal to` 1

@@ -2,7 +2,7 @@ package no.nav.helse.flex
 
 import no.nav.helse.flex.henvendelse.HenvendelseKafkaDTO
 import no.nav.helse.flex.henvendelse.HenvendelseRepository
-import no.nav.helse.flex.henvendelse.topic
+import no.nav.helse.flex.henvendelse.TOPIC
 import org.amshove.kluent.`should be equal to`
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.awaitility.Awaitility.await
@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class LagreKafkaMeldingerTest : FellesTestOppsett() {
-
     @Autowired
     lateinit var henvendelseRepository: HenvendelseRepository
 
@@ -27,10 +26,16 @@ class LagreKafkaMeldingerTest : FellesTestOppsett() {
         henvendelseRepository.count() `should be equal to` 0
         kafkaProducer.send(
             ProducerRecord(
-                topic,
+                TOPIC,
                 UUID.randomUUID().toString(),
-                HenvendelseKafkaDTO(fnr = "1234", tema = "SYK", tidspunkt = Instant.EPOCH, temagruppe = "HELSE", traadId = "123456").serialisertTilString()
-            )
+                HenvendelseKafkaDTO(
+                    fnr = "1234",
+                    tema = "SYK",
+                    tidspunkt = Instant.EPOCH,
+                    temagruppe = "HELSE",
+                    traadId = "123456",
+                ).serialisertTilString(),
+            ),
         )
 
         await().atMost(5, TimeUnit.SECONDS).until {
