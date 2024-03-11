@@ -1,0 +1,1 @@
+CREATE INDEX henvendelse_tidspunkt_idx ON henvendelse (tidspunkt);
