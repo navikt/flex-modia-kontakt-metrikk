@@ -41,6 +41,7 @@ spec:
         highAvailability: {{db_highAvailability}}
         pointInTimeRecovery: {{db_pointInTimeRecovery}}
         diskAutoresize: true
+        cascadingDelete: true
         databases:
           - name: flex-modia-kontakt-metrikk-db
             envVarPrefix: DATABASE
